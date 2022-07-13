@@ -20,7 +20,7 @@ export class QuizController extends BaseController {
 
     async getAverageAndNbUsers(req: Request, res: Response) {
         try {
-            const quiz = await Quiz.findOne({ date: generateDate() }, "average nbPlayers");
+            const quiz = await Quiz.findOne({ date: generateDate() }, "average nbPlayers countGoodResponse");
             this.jsonRes(quiz, res);
         } catch (error: any) {
             console.log(error);
@@ -32,8 +32,9 @@ export class QuizController extends BaseController {
         try {
             const rank = req.body.rank
             const date : any = generateDate();
-            const quiz = await Quiz.findOne({ date: date }, "average nbPlayers");
-            const result = await Quiz.findOneAndUpdate({date: date},{average : (quiz.average + rank) / (quiz.nbPlayers + 1) , nbPlayers : quiz.nbPlayers + 1 }, {new: true });
+            const quiz = await Quiz.findOne({ date: date }, "countGoodResponse nbPlayers");
+            console.log(quiz)
+            const result = await Quiz.findOneAndUpdate({date: date},{countGoodResponse : (quiz.countGoodResponse + rank)  , nbPlayers : quiz.nbPlayers + 1 }, {new: true });
             this.jsonRes(result, res);
         } catch (error: any) {
             console.log(error);

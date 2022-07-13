@@ -20,9 +20,13 @@ questionSchema.virtual("allResponse").get( function (this : any)  {
 const quizSchema = new Schema({
     date: { type: Date, default: Date.now },
     question: [questionSchema],
-    average : { type : Number , default : 0 } ,
+    countGoodResponse : { type : Number , default : 0 } ,
     nbPlayers : { type : Number , default : 0 }
 
+});
+
+quizSchema.virtual("average").get( function (this : any)  {
+    return this.countGoodResponse / this.nbPlayers
 });
 
 export const Quiz = mongoose.model("quiz", quizSchema);

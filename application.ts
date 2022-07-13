@@ -2,6 +2,7 @@ import { Application } from "express";
 import express = require("express");
 import { CronService } from "./src/services/cron/cronService";
 import { connect} from "./src/services/database/database"
+const path = require("path");
 
 var cors = require('cors');
 
@@ -15,6 +16,7 @@ export class App {
     ) {
         this.app = express();
         this.middleware();
+        this.assets();
         this.routes(routes);
     }
 
@@ -26,9 +28,17 @@ export class App {
     }
 
     private routes(routes: Array<express.Router>) {
+
+        
         routes.forEach((r) => {
             this.app.use(`/api`, r);
         });
+
+        this.app.get('*', (req ,res) => {
+            res.sendFile(
+                path.join(__dirname, "../client/build/index.html")
+              );
+         });
     }
 
     public cron() {
@@ -37,6 +47,10 @@ export class App {
 
     public async connectDatabase() {
         await connect()
+    }
+
+    private assets() {
+        this.app.use(express.static(path.join(__dirname,"../client/build")));
     }
 
     /**

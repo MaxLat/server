@@ -1,8 +1,14 @@
 var moment = require('moment');
 
-export const generateDate = ()  => {
-    const today = moment(new Date()).format('YYYY-MM-DD[T00:00:00.000Z]');
-    return today
+export const generateDate = (suplyday = 0)  => {
+
+    const date = moment(new Date());
+
+    if(suplyday){
+        date.add(suplyday,'days')
+    }
+
+    return date.format('YYYY-MM-DD[T00:00:00.000Z]')
 }
 
 export const shuffle = (array : Array<any>) => {
