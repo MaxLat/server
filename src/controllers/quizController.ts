@@ -33,7 +33,6 @@ export class QuizController extends BaseController {
             const rank = req.body.rank
             const date : any = generateDate();
             const quiz = await Quiz.findOne({ date: date }, "countGoodResponse nbPlayers");
-            console.log(quiz)
             const result = await Quiz.findOneAndUpdate({date: date},{countGoodResponse : (quiz.countGoodResponse + rank)  , nbPlayers : quiz.nbPlayers + 1 }, {new: true });
             this.jsonRes(result, res);
         } catch (error: any) {
